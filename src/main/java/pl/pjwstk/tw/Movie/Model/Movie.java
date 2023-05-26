@@ -1,54 +1,45 @@
 package pl.pjwstk.tw.Movie.Model;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "movie")
 public class Movie {
-    private static final AtomicInteger count = new AtomicInteger(0);
-    int id = 0;
-    String name;
-    String category;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int movieId;
+    private String movieName;
+    private String movieCategory;
 
-    public Movie(String name, String category) {
-        this.id = count.incrementAndGet();
-        this.name = name;
-        this.category = category;
+    public Movie() {
     }
 
-    public int getId() {
-        return id;
+    public Movie(String movieName, String movieCategory) {
+        this.movieName = movieName;
+        this.movieCategory = movieCategory;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public String getName() {
-        return name;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getMovieName() {
+        return movieName;
     }
 
-    public String getCategory() {
-        return category;
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public String getMovieCategory() {
+        return movieCategory;
     }
 
-    public void setNameAndCategory(String name, String category) {
-        this.name = name;
-        this.category = category;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                '}';
+    public void setMovieCategory(String movieCategory) {
+        this.movieCategory = movieCategory;
     }
 }

@@ -1,43 +1,51 @@
 package pl.pjwstk.tw.Movie.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pjwstk.tw.Movie.Model.Movie;
+import pl.pjwstk.tw.Movie.MovieRepository.MovieRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
-    public List<Movie> movieList = new ArrayList<>();
-    public void generateMovieList() {
-        movieList.add(new Movie("abcd", "documental"));
-        movieList.add(new Movie("abcdef", "comedy"));
-        movieList.add(new Movie("abcdefggh", "drama"));
+    private final MovieRepository movieRepository;
+
+    @Autowired
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
-    public List getList() {
-        return movieList;
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
     }
 
-    public Movie findMovieById(int id) {
-        for (Movie movie : movieList) {
-            if(movie.getId() == id) {
-                return movie;
-            }
+    public Optional<Movie> getMovieById(int movieId) {
+        return movieRepository.findById(movieId);
+    }
+
+    public Movie createMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    public Movie updateMovie(int movieId, String movieName, String movieCategory) {
+        Optional<Movie> optionalMovie = movieRepository.findById(movieId);
+        if (optionalMovie.isPresent()) {
+            Movie movie = optionalMovie.get();
+            movie.setMovieName(movieName);
+            movie.setMovieCategory(movieCategory);
+            return movieRepository.save(movie);
         }
         return null;
     }
-    public Movie findMovieByName(String name) {
-        for (Movie movie : movieList) {
-            if(movie.getName() == name) {
-                return movie;
-            }
-        }
-        return null;
-    }
 
-    public Movie save(Movie newMovie) {
-        movieList.add(newMovie);
-        return newMovie;
+    public boolean deleteMovie(int movieId) {
+        Optional<Movie> optionalMovie = movieRepository.findById(movieId);
+        if (optionalMovie.isPresent()) {
+            movieRepository.deleteById(movieId);
+            return true;
+        }
+        return false;
     }
 }
