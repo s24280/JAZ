@@ -21,6 +21,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     void deleteById(int movieId);
 
     @Modifying
-    @Query("UPDATE movie SET movie_name = :name, movie_category = :category WHERE movie_id = :id")
+    @Query("UPDATE movie SET movie_name = name, movie_category = category WHERE movie_id = id")
     void updateMovie(@Param("id") int movieId, @Param("name") String movieName, @Param("category") String movieCategory);
 }
